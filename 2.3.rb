@@ -28,7 +28,7 @@ def print_patient_bill(name, total)
 	# write this procedure to print out the patient name
 	# and the bill total - use the procedure (from input_functions)
 	# print_float(value, decimal_places) to print the total
-	puts ("The patient name: #{name} n\The total amount due is: #{total}")
+	puts ("The patient name: #{name} \nThe total amount due is: #{total}")
 end
 
 def create_patient_bill()

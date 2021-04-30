@@ -20,8 +20,7 @@ end
 # along with the name of the user (pass in: name, age) 
 def print_year_born(age, name)
   year_born = Date.today.year -  age
-  age = year_born.to_s
-  print("#{name} you were born in: #{age}")
+  puts "#{name.chomp.to_s} you were born in #{year_born.to_s}"
 end
 
 def main()
