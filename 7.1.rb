@@ -1,7 +1,5 @@
 require './input_functions'
 
-$genre_names = ['Pop', 'Classic', 'Jazz', 'Rock']
-
 class Album
     attr_accessor :title, :artist, :genre, :tracks
     def initialize(title, artist, genre, tracks)
@@ -12,7 +10,7 @@ class Album
     end
 end
 
-class Track
+class Track 
     attr_accessor :name, :location
     def initialize(name, location)
         @name = name
@@ -25,16 +23,17 @@ def finished
 end
 
 def read_albums(music_file, albums)
-  read_string 'Enter album filename: '
+  puts 'Enter album filename: '
   albums = Array.new()
   read_count = music_file.gets.to_i
       index = 0
       while (index < read_count)
-          albums.push(read_album(music_file))
+          album = read_album(music_file)
+          albums << album
           index += 1
       end
       music_file.close()
-      puts "File has been read. Read #{read_count} albums."
+      puts "File has been read. there are #{read_count} albums."
       read_string("Press enter to continue")
   return albums
 end
@@ -54,17 +53,18 @@ def read_tracks(music_file)
     index = 0
 
     while (index < count)
-    tracks.push(read_track(music_file))
-    index += 1
+      track = read_track(music_file)
+      tracks << track
+      index += 1
     end
-    tracks
+    return tracks
 end
 
 def read_track(music_file)
     song_title = music_file.gets
     file_location = music_file.gets
     track = Track.new(song_title, file_location)
-    track
+    return track 
 end
 
 def print_albums(albums)
@@ -76,7 +76,7 @@ def print_albums(albums)
           index = 0
 
           while (index < count)
-              puts "The following are the details of the album #{index + 1}"
+              puts "Details of album #{index + 1}"
               print_album(albums[index])
               index += 1
       end
@@ -85,26 +85,33 @@ def print_albums(albums)
 end
 
 def print_album(album)
-    puts 'Genre is ' + album.genre
     puts 'Artist is ' + album.artist
     puts 'Title is ' + album.title
+    puts 'Genre is ' + album.genre
+    puts "      "
+    puts "      "
     tracks = album.tracks
-    print_tracks(album.tracks)
+    print_tracks(album.tracks, album.title)
 end
 
-def print_tracks(tracks)
+def print_tracks(tracks, title)
     count = tracks.length
-    puts 'There are ' + count.to_s + ' tracks in this album:'
+    puts "There are #{count.to_s} tracks in #{title}"
+    puts "      "
     index = 0
     while (index < count)
+        song_number = index + 1
+        puts "Track number #{song_number.to_s}"
         print_track(tracks[index])
         index += 1
     end
+    puts "      "
 end
 
 def print_track(track)
-    puts('Track title: ' + track.name)
-    puts('Track file location: ' + track.location)
+    puts('Title: ' + track.name)
+    puts('location: ' + track.location)
+    puts "      "
 end
 
 def print_album_names(albums)
@@ -121,7 +128,7 @@ def print_album_names(albums)
 
       album_selection = read_integer_in_range("Select an album to play", 1, count)
       puts ("Tracks in album #{album_selection}: ")
-      print_tracks(albums[album_selection - 1].tracks)
+      print_tracks(albums[album_selection - 1].tracks, albums[album_selection - 1].title)
 
       track_selection = read_integer_in_range("Select a track to play", 1, (albums[album_selection].tracks.length + 1))
       puts ("Playing Track #{track_selection}: " + albums[album_selection - 1].tracks[track_selection - 1].name)
@@ -136,7 +143,7 @@ def print_album_names(albums)
         puts "No album has been selected."
     else
     album_menu = true
-    while (album_menu  == true)
+    while (album_menu  == true) 
         index = 0
         count = albums.length
         modify_menu = true
@@ -179,10 +186,12 @@ def modify_menu(albums)
     puts "Change title or genre of album"
     index = 0
     count = albums.length
-    while (index < count)
+    while (index < count) 
         puts "Albums #{index +1} Details: "
+        puts "      "
         puts ("Title: " + albums[index].title)
         puts ("Genre: " + albums[index].genre)
+        puts "      "
         index += 1
     end
 
@@ -196,23 +205,23 @@ def modify_menu(albums)
     return album_selection
 end
 
-
+  
   def main_menu(finished, albums)
     while (!finished)
       puts "Main Menu:"
       puts "1. Read in Album"
-      puts "2. Display Album Information"
+      puts "2. Display Album Infomation"
       puts "3. Play Album"
       puts "4. Update Album"
       puts "5. Exit"
       choice = read_integer_in_range("Please enter your choice: ", 1, 5)
-
+       
       case choice
-        when 1
+        when 1  
           file_name = read_string("Please enter the filename of the album: ")
           music_file = File.new(file_name, "r")
-          albums = read_albums(music_file, albums)
-        when 2
+          albums = read_albums(music_file, albums)            
+        when 2 
           print_albums(albums)
         when 3
           print_album_names(albums)
@@ -223,11 +232,11 @@ end
       end
     end
   end
-
+  
   def main
     finished = false;
     albums = nil
     main_menu(finished, albums)
   end
-
-  main()
+  
+  main
